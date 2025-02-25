@@ -3,7 +3,7 @@ services:
     image: mcr.microsoft.com/mssql/server
     container_name: sql_server_container
     ports:
-      - "1433:1433"  # Expose SQL Server on localhost:1433
+      - "1444:1433"  # Expose SQL Server on localhost:1433
     environment:
       - ACCEPT_EULA=Y  # Accept the SQL Server EULA
       - SA_PASSWORD=YourStrong@Passw0rd  # Set a strong password for the 'sa' user
