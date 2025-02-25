@@ -10,6 +10,7 @@ services:
       - MSSQL_PID=Express  # Optional: set the SQL Server edition (e.g., Developer, Express)
     volumes:
       - sql_data:/var/opt/mssql  # Persistent storage for SQL Server data
+      - ./sql_backups:/var/opt/mssql/backups
 
 volumes:
   sql_data:
