@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
     <title>Shoes Online Store</title>
@@ -7,10 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="keywords" content="Online Store">
-    <link rel="stylesheet" href="css/vendor.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" th:href="@{/css/vendor.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -152,7 +152,7 @@
             <div class="modal-body">
                 <div class="col-lg-12 col-md-12 me-3">
                     <div class="image-holder">
-                        <img src="images/summary-item1.jpg" alt="Shoes">
+                        <img th:src="@{/images/summary-item1.jpg}" alt="Shoes">
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12">
@@ -242,7 +242,7 @@
                             <div class="mini-cart-item d-flex border-bottom pb-3">
                                 <div class="col-lg-2 col-md-3 col-sm-2 me-4">
                                     <a href="#" title="product-image">
-                                        <img src="images/single-product-thumb1.jpg" class="img-fluid"
+                                        <img th:src="@{/images/single-product-thumb1.jpg}" class="img-fluid"
                                              alt="single-product-item">
                                     </a>
                                 </div>
@@ -287,7 +287,7 @@
                             <div class="mini-cart-item d-flex border-bottom pb-3">
                                 <div class="col-lg-2 col-md-3 col-sm-2 me-4">
                                     <a href="#" title="product-image">
-                                        <img src="images/single-product-thumb2.jpg" class="img-fluid"
+                                        <img th:src="@{/images/single-product-thumb2.jpg}" class="img-fluid"
                                              alt="single-product-item">
                                     </a>
                                 </div>
@@ -356,11 +356,21 @@
     <nav id="header-nav" class="navbar navbar-expand-lg">
         <div class="container-lg">
             <div class="d-flex justify-content-end align-items-center">
-                <a href="#" data-bs-toggle="modal" data-bs-target="#modallong" class="border-0">
-                    <svg class="shopping-cart" width="24" height="24">
-                        <use xlink:href="#shopping-cart"></use>
-                    </svg>
-                </a>
+                <div class="d-flex justify-content-end align-items-center">
+                    <div>
+                    <span sec:authorize="isAuthenticated()">
+                        <a href="/logout" class="btn btn-primary">Logout</a>
+                    </span>
+                        <span sec:authorize="!isAuthenticated()">
+                        <a href="/login" class="btn btn-primary">Login</a>
+                    </span>
+                    </div>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modallong" class="border-0">
+                        <svg class="shopping-cart" width="24" height="24">
+                            <use xlink:href="#shopping-cart"></use>
+                        </svg>
+                    </a>
+                </div>
             </div>
         </div>
     </nav>
@@ -381,7 +391,8 @@
                     <div class="col mb-4">
                         <div class="product-card position-relative">
                             <div class="card-img">
-                                <img src="images/card-item1.jpg" alt="product-item" class="product-image img-fluid">
+                                <img th:src="@{/images/card-item1.jpg}" alt="product-item"
+                                     class="product-image img-fluid">
                                 <div class="cart-concern position-absolute d-flex justify-content-center">
                                     <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
                                         <button type="button" class="btn btn-light" data-bs-toggle="modal"
@@ -412,7 +423,7 @@
                 <div class="col mb-4">
                     <div class="product-card position-relative">
                         <div class="card-img">
-                            <img src="images/card-item2.jpg" alt="product-item" class="product-image img-fluid">
+                            <img th:src="@{/images/card-item2.jpg}" alt="product-item" class="product-image img-fluid">
                             <div class="cart-concern position-absolute d-flex justify-content-center">
                                 <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
                                     <button type="button" class="btn btn-light" data-bs-toggle="modal"
@@ -442,7 +453,7 @@
                 <div class="col mb-4">
                     <div class="product-card position-relative">
                         <div class="card-img">
-                            <img src="images/card-item3.jpg" alt="product-item" class="product-image img-fluid">
+                            <img th:src="@{/images/card-item3.jpg}" alt="product-item" class="product-image img-fluid">
                             <div class="cart-concern position-absolute d-flex justify-content-center">
                                 <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
                                     <button type="button" class="btn btn-light" data-bs-toggle="modal"
@@ -472,7 +483,7 @@
                 <div class="col mb-4">
                     <div class="product-card position-relative">
                         <div class="card-img">
-                            <img src="images/card-item4.jpg" alt="product-item" class="product-image img-fluid">
+                            <img th:src="@{/images/card-item4.jpg}" alt="product-item" class="product-image img-fluid">
                             <div class="cart-concern position-absolute d-flex justify-content-center">
                                 <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
                                     <button type="button" class="btn btn-light" data-bs-toggle="modal"
@@ -502,7 +513,7 @@
                 <div class="col mb-4">
                     <div class="product-card position-relative">
                         <div class="card-img">
-                            <img src="images/card-item5.jpg" alt="product-item" class="product-image img-fluid">
+                            <img th:src="@{/images/card-item5.jpg}" alt="product-item" class="product-image img-fluid">
                             <div class="cart-concern position-absolute d-flex justify-content-center">
                                 <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
                                     <button type="button" class="btn btn-light" data-bs-toggle="modal"
@@ -546,7 +557,7 @@
                 <div class="col mb-4 mb-3">
                     <div class="product-card position-relative">
                         <div class="card-img">
-                            <img src="images/card-item6.jpg" alt="product-item" class="product-image img-fluid">
+                            <img th:src="@{/images/card-item6.jpg}" alt="product-item" class="product-image img-fluid">
                             <div class="cart-concern position-absolute d-flex justify-content-center">
                                 <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
                                     <button type="button" class="btn btn-light" data-bs-toggle="modal"
@@ -576,7 +587,7 @@
                 <div class="col mb-4 mb-3">
                     <div class="product-card position-relative">
                         <div class="card-img">
-                            <img src="images/card-item7.jpg" alt="product-item" class="product-image img-fluid">
+                            <img th:src="@{/images/card-item7.jpg}" alt="product-item" class="product-image img-fluid">
                             <div class="cart-concern position-absolute d-flex justify-content-center">
                                 <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
                                     <button type="button" class="btn btn-light" data-bs-toggle="modal"
@@ -606,7 +617,7 @@
                 <div class="col mb-4 mb-3">
                     <div class="product-card position-relative">
                         <div class="card-img">
-                            <img src="images/card-item8.jpg" alt="product-item" class="product-image img-fluid">
+                            <img th:src="@{/images/card-item8.jpg}" alt="product-item" class="product-image img-fluid">
                             <div class="cart-concern position-absolute d-flex justify-content-center">
                                 <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
                                     <button type="button" class="btn btn-light" data-bs-toggle="modal"
@@ -636,7 +647,7 @@
                 <div class="col mb-4 mb-3">
                     <div class="product-card position-relative">
                         <div class="card-img">
-                            <img src="images/card-item9.jpg" alt="product-item" class="product-image img-fluid">
+                            <img th:src="@{/images/card-item9.jpg}" alt="product-item" class="product-image img-fluid">
                             <div class="cart-concern position-absolute d-flex justify-content-center">
                                 <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
                                     <button type="button" class="btn btn-light" data-bs-toggle="modal"
@@ -666,7 +677,7 @@
                 <div class="col mb-4 mb-3">
                     <div class="product-card position-relative">
                         <div class="card-img">
-                            <img src="images/card-item10.jpg" alt="product-item" class="product-image img-fluid">
+                            <img th:src="@{/images/card-item10.jpg}" alt="product-item" class="product-image img-fluid">
                             <div class="cart-concern position-absolute d-flex justify-content-center">
                                 <div class="cart-button d-flex gap-2 justify-content-center align-items-center">
                                     <button type="button" class="btn btn-light" data-bs-toggle="modal"
@@ -698,9 +709,9 @@
     </div>
 </section>
 
-<script src="js/jquery-1.11.0.min.js"></script>
-<script src="js/plugins.js"></script>
-<script src="js/script.js"></script>
+<script th:src="@{/js/jquery-1.11.0.min.js}"></script>
+<script th:src="@{/js/plugins.js}"></script>
+<script th:src="@{/js/script.js}"></script>
 </body>
 
 </html>
