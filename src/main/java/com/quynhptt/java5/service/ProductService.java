@@ -3,6 +3,9 @@ package com.quynhptt.java5.service;
 import com.quynhptt.java5.entity.Product;
 import com.quynhptt.java5.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +35,11 @@ public class ProductService {
 
     public void deleteProduct(Integer id) {
         productRepository.deleteById(id);
+    }
+
+    public Page<Product> getProducts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return this.productRepository.findAll(pageable);
     }
 
     public List<Product> getProducts() {
