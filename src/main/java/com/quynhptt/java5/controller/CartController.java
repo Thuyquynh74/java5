@@ -4,6 +4,7 @@ import com.quynhptt.java5.entity.Cart;
 import com.quynhptt.java5.service.CartService;
 import com.quynhptt.java5.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class CartController {
         List<Cart> carts = cartService.getCartItems(userId);
         model.addAttribute("cartItems", carts);
         model.addAttribute("totalPrice", calculateTotalPrice(carts));
-        return "cart";
+        return "/cart::cart-content";
 
     }
 
@@ -43,25 +44,48 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public String addToCart(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("productId") Integer productId) {
+    public ResponseEntity<String> addToCart(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("productId") Integer productId) {
         Long userId = userService.findUserByUsername(userDetails.getUsername()).getId();
         cartService.addToCart(productId, userId);
-        return "redirect:/cart";
+        return ResponseEntity.ok("Added to cart");
     }
 
     @PostMapping("/remove")
-    public String removeFromCart(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("productId") Integer productId) {
+    public ResponseEntity<String> removeFromCart(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("productId") Integer productId) {
         Long userId = userService.findUserByUsername(userDetails.getUsername()).getId();
         cartService.removeFromCart(productId, userId);
-        return "redirect:/cart";
+        return null;
     }
 
     @PostMapping("/update")
-    public String updateCart(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("productId") Integer productId,
-                             @RequestParam("quantity") int quantity) {
+    public ResponseEntity<String> updateCart(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("productId") Integer productId,
+                                             @RequestParam("quantity") int quantity) {
         Long userId = userService.findUserByUsername(userDetails.getUsername()).getId();
         cartService.updateCart(productId, quantity, userId);
-        return "redirect:/cart";
+        return ResponseEntity.ok("Updated cart");
+    }
+
+    @PostMapping("/plus")
+    public ResponseEntity<String> plusProduct(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("productId") Integer productId) {
+        Long userId = userService.findUserByUsername(userDetails.getUsername()).getId();
+        cartService.updateCart(productId, 1, userId);
+        return ResponseEntity.ok("Updated cart");
+    }
+
+
+    @PostMapping("/minus")
+    public ResponseEntity<String> minusProduct(@AuthenticationPrincipal UserDetails userDetails, @RequestParam("productId") Integer productId) {
+        Long userId = userService.findUserByUsername(userDetails.getUsername()).getId();
+        cartService.updateCart(productId, -1, userId);
+        return ResponseEntity.ok("Updated cart");
+    }
+
+
+    @PostMapping("/check-out")
+    public ResponseEntity<String> checkout(@AuthenticationPrincipal UserDetails userDetails) {
+        Long userId = userService.findUserByUsername(userDetails.getUsername()).getId();
+        cartService.checkOut(userId);
+        return ResponseEntity.ok("Checked out");
     }
 }
 

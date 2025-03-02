@@ -35,4 +35,9 @@ public class Product {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     private List<Category> categories;
+
+    public String getImageUrl() {
+        return String.format("/images/card-item%d.jpg", (int) (Math.random() * 10) + 1);
+    }
+
 }

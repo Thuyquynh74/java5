@@ -6,6 +6,7 @@ import com.quynhptt.java5.repository.CartRepository;
 import com.quynhptt.java5.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +21,7 @@ public class CartService {
         return cartRepository.findAllByUserId(userId);
     }
 
-    public List<Cart> addToCart(Integer productId, Long userId) {
+    public void addToCart(Integer productId, Long userId) {
         Optional<Product> product = productRepository.findById(productId);
         product.ifPresent(it -> {
             Cart cart = cartRepository.findByUserIdAndProduct_Id(userId, productId);
@@ -35,14 +36,14 @@ public class CartService {
                 cartRepository.save(cart);
             }
         });
-        return getCartItems(userId);
     }
 
+    @Transactional
     public void removeFromCart(Integer productId, Long userId) {
-        cartRepository.deleteByUserIdAndProduct_Id(userId, productId);
+        cartRepository.deleteCartByUserIdAndProductId(userId, productId);
     }
 
-    public List<Cart> updateCart(Integer productId, int quantity, Long userId) {
+    public void updateCart(Integer productId, int quantity, Long userId) {
         Optional<Product> product = productRepository.findById(productId);
         product.ifPresent(it -> {
             Cart cart = cartRepository.findByUserIdAndProduct_Id(userId, productId);
@@ -53,11 +54,15 @@ public class CartService {
                 cart.setQuantity(quantity);
                 cartRepository.save(cart);
             } else {
-                cart.setQuantity(quantity);
+                cart.setQuantity(cart.getQuantity() + quantity);
                 cartRepository.save(cart);
             }
         });
-        return getCartItems(userId);
+    }
+
+    @Transactional
+    public void checkOut(Long userId) {
+        cartRepository.deleteCartByUserId(userId);
     }
 }
 
