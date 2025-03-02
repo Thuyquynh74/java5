@@ -238,111 +238,77 @@
             <div class="modal-body">
                 <div class="shopping-cart">
                     <div class="shopping-cart-content">
-                        <div class="mini-cart cart-list p-0 mt-3">
-                            <div class="mini-cart-item d-flex border-bottom pb-3">
-                                <div class="col-lg-2 col-md-3 col-sm-2 me-4">
-                                    <a href="#" title="product-image">
-                                        <img th:src="@{/images/single-product-thumb1.jpg}" class="img-fluid"
-                                             alt="single-product-item">
-                                    </a>
-                                </div>
-                                <div class="col-lg-9 col-md-8 col-sm-8">
-                                    <div class="product-header d-flex justify-content-between align-items-center mb-3">
-                                        <h4 class="product-title fs-6 me-5">Sport Shoes For Men</h4>
-                                        <a href="" class="remove" aria-label="Remove this item" data-product_id="11913"
-                                           data-cart_item_key="abc" data-product_sku="">
-                                            <svg class="close">
-                                                <use xlink:href="#close"></use>
-                                            </svg>
-                                        </a>
-                                    </div>
-                                    <div class="quantity-price d-flex justify-content-between align-items-center">
-                                        <div class="input-group product-qty">
-                                            <button type="button"
-                                                    class="quantity-left-minus btn btn-light rounded-0 rounded-start btn-number"
-                                                    data-type="minus">
-                                                <svg width="16" height="16">
-                                                    <use xlink:href="#minus"></use>
-                                                </svg>
-                                            </button>
-                                            <input type="text" name="quantity"
-                                                   class="form-control input-number quantity" value="1">
-                                            <button type="button"
-                                                    class="quantity-right-plus btn btn-light rounded-0 rounded-end btn-number"
-                                                    data-type="plus">
-                                                <svg width="16" height="16">
-                                                    <use xlink:href="#plus"></use>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                        <div class="price-code">
-                                            <span class="product-price fs-6">$99</span>
-                                        </div>
-                                    </div>
-                                    <!-- quantity-price -->
-                                </div>
-                            </div>
+                        <div th:if="${#lists.isEmpty(cartItems)}" class="text-center">
+                            <p>Your cart is empty.</p>
                         </div>
-                        <div class="mini-cart cart-list p-0 mt-3">
+                        <div th:each="cartItem : ${cartItems}" class="mini-cart cart-list p-0 mt-3">
                             <div class="mini-cart-item d-flex border-bottom pb-3">
                                 <div class="col-lg-2 col-md-3 col-sm-2 me-4">
                                     <a href="#" title="product-image">
-                                        <img th:src="@{/images/single-product-thumb2.jpg}" class="img-fluid"
-                                             alt="single-product-item">
+                                        <img th:src="@{${cartItem.product.imageUrl}}" class="img-fluid"
+                                             alt="product-image">
                                     </a>
                                 </div>
                                 <div class="col-lg-9 col-md-8 col-sm-8">
                                     <div class="product-header d-flex justify-content-between align-items-center mb-3">
-                                        <h4 class="product-title fs-6 me-5">Brand Shoes For Men</h4>
-                                        <a href="" class="remove" aria-label="Remove this item" data-product_id="11913"
-                                           data-cart_item_key="abc" data-product_sku="">
-                                            <svg class="close">
-                                                <use xlink:href="#close"></use>
-                                            </svg>
-                                        </a>
+                                        <h4 class="product-title fs-6 me-5" th:text="${cartItem.product.name}"></h4>
+                                        <form th:action="@{/cart/remove}" method="post">
+                                            <input type="hidden" name="productId" th:value="${cartItem.product.id}">
+                                            <button type="submit" class="btn btn-link text-danger p-0"
+                                                    aria-label="Remove this item">
+                                                <svg class="close">
+                                                    <use xlink:href="#close"></use>
+                                                </svg>
+                                            </button>
+                                        </form>
                                     </div>
                                     <div class="quantity-price d-flex justify-content-between align-items-center">
-                                        <div class="input-group product-qty">
-                                            <button type="button"
-                                                    class="quantity-left-minus btn btn-light rounded-0 rounded-start btn-number"
-                                                    data-type="minus">
-                                                <svg width="16" height="16">
-                                                    <use xlink:href="#minus"></use>
-                                                </svg>
-                                            </button>
-                                            <input type="text" name="quantity"
-                                                   class="form-control input-number quantity" value="1">
-                                            <button type="button"
-                                                    class="quantity-right-plus btn btn-light rounded-0 rounded-end btn-number"
-                                                    data-type="plus">
-                                                <svg width="16" height="16">
-                                                    <use xlink:href="#plus"></use>
-                                                </svg>
-                                            </button>
-                                        </div>
+                                        <form th:action="@{/cart/update}" method="post"
+                                              class="d-flex align-items-center">
+                                            <input type="hidden" name="productId" th:value="${cartItem.product.id}">
+                                            <div class="input-group product-qty">
+                                                <button type="submit" name="quantity"
+                                                        th:value="${cartItem.quantity - 1}"
+                                                        class="quantity-left-minus btn btn-light rounded-0 rounded-start btn-number"
+                                                        th:disabled="${cartItem.quantity <= 1}">
+                                                    <svg width="16" height="16">
+                                                        <use xlink:href="#minus"></use>
+                                                    </svg>
+                                                </button>
+                                                <input type="text" name="quantity"
+                                                       class="form-control input-number quantity text-center"
+                                                       th:value="${cartItem.quantity}" readonly>
+                                                <button type="submit" name="quantity"
+                                                        th:value="${cartItem.quantity + 1}"
+                                                        class="quantity-right-plus btn btn-light rounded-0 rounded-end btn-number">
+                                                    <svg width="16" height="16">
+                                                        <use xlink:href="#plus"></use>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </form>
                                         <div class="price-code">
-                                            <span class="product-price fs-6">$99</span>
+                                            <span class="product-price fs-6"
+                                                  th:text="'$' + ${cartItem.product.price * cartItem.quantity}"></span>
                                         </div>
                                     </div>
-                                    <!-- quantity-price -->
                                 </div>
                             </div>
                         </div>
                         <!-- cart-list -->
-                        <div class="mini-cart-total d-flex justify-content-between py-4">
+                        <div class="mini-cart-total d-flex justify-content-between py-4"
+                             th:if="${not #lists.isEmpty(cartItems)}">
                             <span class="fs-6">Subtotal:</span>
                             <span class="special-price-code">
-                  <span class="price-amount amount fs-6" style="opacity: 1;">
-                    <bdi>
-                      <span class="price-currency-symbol">$</span>198.00 </bdi>
-                  </span>
-                </span>
+                                <span class="price-amount amount fs-6">
+                                    <bdi><span class="price-currency-symbol">$</span><span
+                                            th:text="${totalPrice}"></span></bdi>
+                                </span>
+                            </span>
                         </div>
-                        <div class="modal-footer my-4 justify-content-center">
-                            <button type="button" class="btn btn-red hvr-sweep-to-right dark-sweep">View Cart</button>
-                            <button type="button"
-                                    class="btn btn-outline-gray hvr-sweep-to-right dark-sweep">Checkout
-                            </button>
+                        <div class="modal-footer my-4 justify-content-center" th:if="${not #lists.isEmpty(cartItems)}">
+                            <a href="/cart" class="btn btn-red hvr-sweep-to-right dark-sweep">View Cart</a>
+                            <a href="/checkout" class="btn btn-outline-gray hvr-sweep-to-right dark-sweep">Checkout</a>
                         </div>
                     </div>
                 </div>
@@ -350,6 +316,7 @@
         </div>
     </div>
 </div>
+
 <!-- cart view -->
 
 <header id="header" class="site-header text-black">
@@ -401,6 +368,14 @@
                                                 <use xlink:href="#shopping-carriage"></use>
                                             </svg>
                                         </button>
+                                        <button type="button" class="btn btn-light add-to-cart-btn"
+                                                th:data-product-id="${product.id}" data-bs-toggle="modal"
+                                                data-bs-target="#modallong">
+                                            <svg class="shopping-carriage">
+                                                <use xlink:href="#shopping-carriage"></use>
+                                            </svg>
+                                        </button>
+
                                         <button type="button" class="btn btn-light" data-bs-target="#modaltoggle"
                                                 data-bs-toggle="modal">
                                             <svg class="quick-view">
@@ -712,6 +687,28 @@
 <script th:src="@{/js/jquery-1.11.0.min.js}"></script>
 <script th:src="@{/js/plugins.js}"></script>
 <script th:src="@{/js/script.js}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $(".add-to-cart-btn").click(function () {
+            var productId = $(this).data("product-id"); // Lấy ID sản phẩm từ thuộc tính data
+            $.ajax({
+                type: "POST",
+                url: "/cart/add",
+                data: {productId: productId},
+                success: function (response) {
+                    alert("Sản phẩm đã được thêm vào giỏ hàng!"); // Hiển thị thông báo
+                },
+                error: function () {
+                    alert("Có lỗi xảy ra, vui lòng thử lại!");
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 
 </html>

@@ -28,4 +28,8 @@ public class UserService implements UserDetailsService {
                 .roles(user.getRoles().stream().map(Role::getName).toArray(String[]::new))
                 .build();
     }
+
+    public com.quynhptt.java5.entity.User findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
+    }
 }
